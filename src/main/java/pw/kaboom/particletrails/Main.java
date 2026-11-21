@@ -5,31 +5,19 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
+import pw.kaboom.particletrails.command.CommandParticleTrails;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public final class Main extends JavaPlugin {
-    private @MonotonicNonNull ParticleStore store;
-    private @MonotonicNonNull ParticleCreator creator;
-
-
-    ParticleStore store() {
-        return store;
-    }
-
-    ParticleCreator creator() {
-        return creator;
-    }
-
-    @Override
-    public void onLoad() {
-        this.store = new ParticleStore();
-    }
+    public final Map<UUID, ParticleData> particles = new HashMap<>();
 
     @Override
     public void onEnable() {
-        this.creator = new ParticleCreator(this);
+        new ParticleCreator(this);
 
         final CommandParticleTrails command = new CommandParticleTrails(this);
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, event -> {
